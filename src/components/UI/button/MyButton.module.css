@@ -1,0 +1,9 @@
+.myBtn{
+    padding: 5px 15px 5px;
+    color: teal;
+    font-size: 14px;
+    background: transparent; /*Цвет заднего фона*/
+    border: 1px solid teal; /*Рамка сплошная*/
+    cursor: pointer;
+    margin: 6px 20px 5px;
+}
