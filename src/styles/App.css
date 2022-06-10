@@ -25,7 +25,9 @@
 .remove-btn {
     margin-right: 0.5rem;
 }
-
+.post__btns{
+    display: flex;
+}
 .post-enter {
     opacity: 0;
 }
