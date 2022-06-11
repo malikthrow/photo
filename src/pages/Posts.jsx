@@ -13,8 +13,10 @@ import PostList from "../components/PostList";
 import Loader from "../components/UI/Loader/Loader";
 import {useObserver} from "../hooks/useObserver";
 import login from "./Login";
+import MySelect from "../components/UI/select/MySelect";
 
 function Posts() {
+    let myPage = 1;
     const [posts, setPosts] = useState([])
     const [filter, setFilter] = useState({sort: '', query: ''})
     const [modal, setModal] = useState(false);
@@ -27,21 +29,20 @@ function Posts() {
 
     const [fetchPosts, isPostsLoading, postError] = useFetching(async (limit, page) => {
         const response = await PosService.getAll(limit, page);
-        setPosts(response.data)
+        setPosts([...posts, ...response.data])
 
         const totalCount = response.headers['x-total-count']
 
         setTotalPages(getPageCount(totalCount, limit));
     })
 
-    useObserver(lastElement, page < totalPages, isPostsLoading, async () => {
-        //setPage(page + 1);
-        const response = await PosService.getAll(limit, page);
-        setPosts([...posts, newPost])
+    useObserver(lastElement, page < totalPages, isPostsLoading, () => {
+        setPage(page+1)
     })
 
     useEffect(() => {
         fetchPosts(limit, page)
+
     }, [page, limit])
 
     const createPost = (newPost) => {
@@ -80,6 +81,16 @@ function Posts() {
 
             <hr style={{margin: '15px 0'}}/>
             <PostFilter filter={filter} setFilter={setFilter} />
+            <MySelect value={limit}
+                      onChange={value=>setLimit(value)}
+                      defaultValue="Кол-во элементов на странице"
+                      option={[
+                          {value: 5,name:'5'},
+                          {value: 10,name:'10'},
+                          {value: 25,name:'25'},
+                          {value: -1,name:'Показать всё'},
+                      ]}
+            ></MySelect>
             {postError &&
                 <h1>Error "{postError}"</h1>
             }
