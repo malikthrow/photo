@@ -1,0 +1,5 @@
+.navbar{
+    display: flex;
+    list-style-type:decimal;
+    background: darkgrey;
+}
